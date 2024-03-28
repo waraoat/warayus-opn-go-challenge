@@ -3,7 +3,7 @@ package donation
 import (
 	"fmt"
 	"tamboon/helper"
-	opn "tamboon/opn"
+	"tamboon/opn"
 )
 
 type Donation struct {
@@ -19,7 +19,7 @@ type Summary struct {
 	TotalReceived float32
 	SuccesfulDonations float32
 	FaultyDonations float32
-	counts map[string]int
+	TotalPerName map[string]float32
 }
 
 func Process(filename string) {
@@ -35,7 +35,7 @@ func Process(filename string) {
 		TotalReceived: 0,
 		SuccesfulDonations: 0,
 		FaultyDonations: 0,
-		counts: map[string]int{},
+		TotalPerName: map[string]float32{},
 	}
 
 	for index, donation := range donations {
@@ -69,7 +69,7 @@ func Process(filename string) {
 		}
 		
 		summary.SuccesfulDonations += float32(donation.AmountSubunits)
-		summary.counts[donation.Name]++
+		summary.TotalPerName[donation.Name] += float32(donation.AmountSubunits)
 	}
 
 	summary.PrintLog()
@@ -78,24 +78,25 @@ func Process(filename string) {
 func (s Summary) PrintLog () {
 	topThree := []string{}
 	for i := 0; i < 3; i++ {
-		maxCount := 0
-		var maxVal string
-		for val, count := range s.counts {
-			if count > maxCount && !helper.Contains(topThree, val) {
-				maxCount = count
-				maxVal = val
+		max := float32(0)
+		maxName := ""
+		for name, total := range s.TotalPerName {
+			if total > max {
+				max = total
+				maxName = name
 			}
 		}
-		if maxVal != "" {
-			topThree = append(topThree, maxVal)
+		if maxName != "" {
+			topThree = append(topThree, maxName)
+			delete(s.TotalPerName, maxName)
 		}
 	}
 
 	var avgPerPerson float32
-	if (len(s.counts) == 0) {
+	if (len(s.TotalPerName) == 0) {
 		avgPerPerson = 0
 	} else {
-		avgPerPerson = s.SuccesfulDonations/float32(len(s.counts))
+		avgPerPerson = s.SuccesfulDonations/float32(len(s.TotalPerName))
 	}
 
 	fmt.Printf("done.\n\n")
