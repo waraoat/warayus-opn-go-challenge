@@ -18,7 +18,7 @@ func GetEnv() (config Config) {
 	}
 
 	opnPublicKey := os.Getenv("PUBLIC_KEY_OPN")
-	ppnSecretKey := os.Getenv("SECRET_KEY_OPN")
+	opnSecretKey := os.Getenv("SECRET_KEY_OPN")
 
-	return Config{OpnPublicKey: ppnSecretKey, OpnSecretKey: opnPublicKey}
+	return Config{OpnPublicKey: opnPublicKey, OpnSecretKey: opnSecretKey}
 }

@@ -30,7 +30,11 @@ func readCSVFile(filename string) ([]Donation, error) {
 	}
 
 	donations := []Donation{}
-	for _, record := range records {
+	for index, record := range records {
+		if index == 0 {
+			continue
+		}
+		
 		amountSubunits, _ := strconv.Atoi(record[1])
 		expMonth, _ := strconv.Atoi(record[4])
 		expYear, _ := strconv.Atoi(record[5])

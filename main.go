@@ -7,9 +7,6 @@ import (
 	"tamboon/donation"
 )
 
-var PUBLIC_KEY_OPN = os.Getenv("PUBLIC_KEY_OPN")
-var SECRET_KEY_OPN = os.Getenv("SECRET_KEY_OPN")
-
 func main() {
 	if len(os.Args) != 2 {
 		fmt.Println("Usage: go run main.go <filename>")
@@ -18,12 +15,8 @@ func main() {
 
 	filename := os.Args[1]
 
-	fmt.Println("performing donations...")
+	fmt.Printf("performing donations...\n\n")
 	
 	donation.Process(filename)
 }
 
-type Config struct {
-	OpnPublicKey string
-	OpnSecretKey string
-}

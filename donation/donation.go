@@ -38,7 +38,8 @@ func Process(filename string) {
 		counts: map[string]int{},
 	}
 
-	for _, donation := range donations {
+	for index, donation := range donations {
+		helper.ShowProgressBar(index, len(donations))
 		summary.TotalReceived += float32(donation.AmountSubunits)
 
 		client := opn.ClientConfig{
@@ -50,7 +51,7 @@ func Process(filename string) {
 			Name: donation.Name,
 			Number: donation.CCNumber,
 			ExpirationMonth: donation.ExpMonth,
-			ExpirationYear: donation.ExpYear,
+			ExpirationYear: donation.ExpYear + 1,
 			SecurityCode: donation.CVV,
 		})
 		if err != nil {
