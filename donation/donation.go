@@ -39,7 +39,7 @@ func Process(filename string) {
 	}
 
 	for index, donation := range donations {
-		helper.ShowProgressBar(index, len(donations))
+		helper.ShowProgressBar(index + 1, len(donations))
 		summary.TotalReceived += float32(donation.AmountSubunits)
 
 		client := opn.ClientConfig{
@@ -99,7 +99,7 @@ func (s Summary) PrintLog () {
 		avgPerPerson = s.SuccesfulDonations/float32(len(s.TotalPerName))
 	}
 
-	fmt.Printf("done.\n\n")
+	fmt.Printf(" done.\n\n")
 	fmt.Printf("        total received: THB %.2f\n", s.TotalReceived)
 	fmt.Printf("  successfully donated: THB %.2f\n", s.SuccesfulDonations)
 	fmt.Printf("       faulty donation: THB %.2f\n", s.FaultyDonations)
